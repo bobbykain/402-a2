@@ -1,0 +1,99 @@
+package cpp_grammar;
+import cpp_grammar.Absyn.*;
+/** BNFC-Generated Composition Visitor
+*/
+
+public class ComposVisitor<A> implements
+  cpp_grammar.Absyn.Program.Visitor<cpp_grammar.Absyn.Program,A>,
+  cpp_grammar.Absyn.Function.Visitor<cpp_grammar.Absyn.Function,A>,
+  cpp_grammar.Absyn.Arg.Visitor<cpp_grammar.Absyn.Arg,A>,
+  cpp_grammar.Absyn.Stm.Visitor<cpp_grammar.Absyn.Stm,A>,
+  cpp_grammar.Absyn.Exp.Visitor<cpp_grammar.Absyn.Exp,A>,
+  cpp_grammar.Absyn.Type.Visitor<cpp_grammar.Absyn.Type,A>
+{
+/* Program */
+    public Program visit(cpp_grammar.Absyn.Prog p, A arg)
+    {
+      ListFunction listfunction_ = new ListFunction();
+      for (Function x : p.listfunction_)
+      {
+        listfunction_.add(x.accept(this,arg));
+      }
+      return new cpp_grammar.Absyn.Prog(listfunction_);
+    }
+/* Function */
+    public Function visit(cpp_grammar.Absyn.Fun p, A arg)
+    {
+      Type type_ = p.type_.accept(this, arg);
+      String ident_ = p.ident_;
+      ListArg listarg_ = new ListArg();
+      for (Arg x : p.listarg_)
+      {
+        listarg_.add(x.accept(this,arg));
+      }
+      ListStm liststm_ = new ListStm();
+      for (Stm x : p.liststm_)
+      {
+        liststm_.add(x.accept(this,arg));
+      }
+      return new cpp_grammar.Absyn.Fun(type_, ident_, listarg_, liststm_);
+    }
+/* Arg */
+    public Arg visit(cpp_grammar.Absyn.Dec p, A arg)
+    {
+      Type type_ = p.type_.accept(this, arg);
+      ListIdent listident_ = p.listident_;
+      return new cpp_grammar.Absyn.Dec(type_, listident_);
+    }
+/* Stm */
+    public Stm visit(cpp_grammar.Absyn.SDecl p, A arg)
+    {
+      Arg arg_ = p.arg_.accept(this, arg);
+      return new cpp_grammar.Absyn.SDecl(arg_);
+    }    public Stm visit(cpp_grammar.Absyn.SExp p, A arg)
+    {
+      Exp exp_ = p.exp_.accept(this, arg);
+      return new cpp_grammar.Absyn.SExp(exp_);
+    }    public Stm visit(cpp_grammar.Absyn.SReturn p, A arg)
+    {
+      Exp exp_ = p.exp_.accept(this, arg);
+      return new cpp_grammar.Absyn.SReturn(exp_);
+    }    public Stm visit(cpp_grammar.Absyn.SBlock p, A arg)
+    {
+      ListStm liststm_ = new ListStm();
+      for (Stm x : p.liststm_)
+      {
+        liststm_.add(x.accept(this,arg));
+      }
+      return new cpp_grammar.Absyn.SBlock(liststm_);
+    }
+/* Exp */
+    public Exp visit(cpp_grammar.Absyn.EInt p, A arg)
+    {
+      Integer integer_ = p.integer_;
+      return new cpp_grammar.Absyn.EInt(integer_);
+    }    public Exp visit(cpp_grammar.Absyn.EStr p, A arg)
+    {
+      String string_ = p.string_;
+      return new cpp_grammar.Absyn.EStr(string_);
+    }    public Exp visit(cpp_grammar.Absyn.EId p, A arg)
+    {
+      String ident_ = p.ident_;
+      return new cpp_grammar.Absyn.EId(ident_);
+    }    public Exp visit(cpp_grammar.Absyn.ELs p, A arg)
+    {
+      Exp exp_1 = p.exp_1.accept(this, arg);
+      Exp exp_2 = p.exp_2.accept(this, arg);
+      return new cpp_grammar.Absyn.ELs(exp_1, exp_2);
+    }    public Exp visit(cpp_grammar.Absyn.EAss p, A arg)
+    {
+      String ident_ = p.ident_;
+      Exp exp_ = p.exp_.accept(this, arg);
+      return new cpp_grammar.Absyn.EAss(ident_, exp_);
+    }
+/* Type */
+    public Type visit(cpp_grammar.Absyn.Tint p, A arg)
+    {
+      return new cpp_grammar.Absyn.Tint();
+    }
+}

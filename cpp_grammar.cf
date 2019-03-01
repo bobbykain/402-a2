@@ -1,0 +1,31 @@
+comment "//" ;
+comment "/*" "*/" ;
+comment "#";
+
+Prog. Program  ::= [Function] ;
+Fun. Function ::= Type Ident "(" [Arg] ")" "{" [Stm] "}";
+Dec.   Arg     ::= Type [Ident] ;
+
+
+
+terminator Function "" ;
+terminator Stm "" ;
+separator Arg "," ;
+separator nonempty Ident "::";
+
+SDecl.   Stm ::= Arg ";"  ;
+SExp.    Stm ::= Exp ";" ;
+SReturn. Stm ::= "return" Exp ";";
+SBlock.  Stm ::= "{" [Stm] "}" ;
+
+EInt.    Exp2  ::= Integer ;
+EStr.    Exp2  ::= String;
+EId.     Exp2  ::= Ident;
+ELs.     Exp1  ::= Exp "<<" Exp ;
+EAss.    Exp   ::= Ident "=" Exp;
+
+coercions Exp 2 ;
+
+separator Exp "," ;
+
+Tint. Type ::= "int" ;
